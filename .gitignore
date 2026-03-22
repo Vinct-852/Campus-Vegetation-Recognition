@@ -1,0 +1,52 @@
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.eggs/
+dist/
+build/
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Environment & secrets
+.env
+.env.*
+!.env.example
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Testing / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# IDE & editors
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Cursor (local AI / plans — optional to track)
+.cursor/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project: generated training & evaluation artefacts (regenerate with classifier.py / evaluate.py)
+outputs/
+
+# Optional: uncomment if image datasets should stay out of git
+# data/
+# data-set-backup/

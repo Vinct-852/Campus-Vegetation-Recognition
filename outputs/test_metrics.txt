@@ -1,0 +1,18 @@
+Test accuracy : 0.9247
+Macro-F1      : 0.9043
+Weighted F1   : 0.9221
+
+                                precision    recall  f1-score   support
+
+                      Camellia       0.92      1.00      0.96        12
+              Ficus_microcarpa       1.00      1.00      1.00        12
+Ficus_microcarpa_golden_leaves       1.00      0.95      0.97        19
+           Goeppertia_makoyana       1.00      0.92      0.96        12
+           Juniperus_chinensis       1.00      0.50      0.67         8
+       Podocarpus_macrophyllus       1.00      1.00      1.00        10
+                  Rhododendron       0.85      1.00      0.92        11
+      Xanthostemon_chrysanthus       0.67      0.89      0.76         9
+
+                      accuracy                           0.92        93
+                     macro avg       0.93      0.91      0.90        93
+                  weighted avg       0.94      0.92      0.92        93

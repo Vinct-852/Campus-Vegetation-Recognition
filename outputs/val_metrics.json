@@ -1,0 +1,581 @@
+{
+  "seed": 42,
+  "img_size": 128,
+  "data_dir": "/Users/vincentdeng/Projects/Campus-Vegetation-Recognition/data",
+  "feature_dim_raw": 1886,
+  "pca_components": 235,
+  "environment": {
+    "python": "3.13.9",
+    "platform": "macOS-15.6.1-arm64-arm-64bit-Mach-O",
+    "numpy": "2.4.2",
+    "sklearn": "1.8.0",
+    "skimage": "0.26.0",
+    "joblib": "1.5.3",
+    "PYTHONHASHSEED": "42",
+    "git_commit_short": "645e28f"
+  },
+  "rf_grid_search": {
+    "best_params": {
+      "max_depth": null,
+      "min_samples_leaf": 1,
+      "n_estimators": 300
+    },
+    "best_cv_score": 0.8187
+  },
+  "classifiers": {
+    "SVM_RBF": {
+      "val_accuracy": 0.9375,
+      "macro_f1": 0.9199,
+      "weighted_f1": 0.9353,
+      "train_time_s": 0.07,
+      "per_class": {
+        "Camellia": {
+          "precision": 1.0,
+          "recall": 0.9,
+          "f1-score": 0.9473684210526315,
+          "support": 10.0
+        },
+        "Ficus_microcarpa": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 10.0
+        },
+        "Ficus_microcarpa_golden_leaves": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 17.0
+        },
+        "Goeppertia_makoyana": {
+          "precision": 1.0,
+          "recall": 0.9,
+          "f1-score": 0.9473684210526315,
+          "support": 10.0
+        },
+        "Juniperus_chinensis": {
+          "precision": 1.0,
+          "recall": 0.5714285714285714,
+          "f1-score": 0.7272727272727273,
+          "support": 7.0
+        },
+        "Podocarpus_macrophyllus": {
+          "precision": 0.9,
+          "recall": 1.0,
+          "f1-score": 0.9473684210526315,
+          "support": 9.0
+        },
+        "Rhododendron": {
+          "precision": 0.9,
+          "recall": 1.0,
+          "f1-score": 0.9473684210526315,
+          "support": 9.0
+        },
+        "Xanthostemon_chrysanthus": {
+          "precision": 0.7272727272727273,
+          "recall": 1.0,
+          "f1-score": 0.8421052631578947,
+          "support": 8.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          9,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          10,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          17,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          9,
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          4,
+          1,
+          0,
+          2
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          9,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          9,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          8
+        ]
+      ]
+    },
+    "RandomForest": {
+      "val_accuracy": 0.875,
+      "macro_f1": 0.8616,
+      "weighted_f1": 0.872,
+      "train_time_s": 0.17,
+      "per_class": {
+        "Camellia": {
+          "precision": 0.8333333333333334,
+          "recall": 1.0,
+          "f1-score": 0.9090909090909091,
+          "support": 10.0
+        },
+        "Ficus_microcarpa": {
+          "precision": 1.0,
+          "recall": 0.9,
+          "f1-score": 0.9473684210526315,
+          "support": 10.0
+        },
+        "Ficus_microcarpa_golden_leaves": {
+          "precision": 0.8095238095238095,
+          "recall": 1.0,
+          "f1-score": 0.8947368421052632,
+          "support": 17.0
+        },
+        "Goeppertia_makoyana": {
+          "precision": 1.0,
+          "recall": 0.9,
+          "f1-score": 0.9473684210526315,
+          "support": 10.0
+        },
+        "Juniperus_chinensis": {
+          "precision": 1.0,
+          "recall": 0.5714285714285714,
+          "f1-score": 0.7272727272727273,
+          "support": 7.0
+        },
+        "Podocarpus_macrophyllus": {
+          "precision": 0.8888888888888888,
+          "recall": 0.8888888888888888,
+          "f1-score": 0.8888888888888888,
+          "support": 9.0
+        },
+        "Rhododendron": {
+          "precision": 1.0,
+          "recall": 0.6666666666666666,
+          "f1-score": 0.8,
+          "support": 9.0
+        },
+        "Xanthostemon_chrysanthus": {
+          "precision": 0.7,
+          "recall": 0.875,
+          "f1-score": 0.7777777777777778,
+          "support": 8.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          10,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          9,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          17,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          9,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          4,
+          1,
+          0,
+          2
+        ],
+        [
+          0,
+          0,
+          1,
+          0,
+          0,
+          8,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          1,
+          0,
+          0,
+          0,
+          6,
+          1
+        ],
+        [
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          7
+        ]
+      ]
+    },
+    "GradientBoosting": {
+      "val_accuracy": 0.8875,
+      "macro_f1": 0.8655,
+      "weighted_f1": 0.8837,
+      "train_time_s": 18.19,
+      "per_class": {
+        "Camellia": {
+          "precision": 1.0,
+          "recall": 0.9,
+          "f1-score": 0.9473684210526315,
+          "support": 10.0
+        },
+        "Ficus_microcarpa": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 10.0
+        },
+        "Ficus_microcarpa_golden_leaves": {
+          "precision": 0.9444444444444444,
+          "recall": 1.0,
+          "f1-score": 0.9714285714285714,
+          "support": 17.0
+        },
+        "Goeppertia_makoyana": {
+          "precision": 0.9090909090909091,
+          "recall": 1.0,
+          "f1-score": 0.9523809523809523,
+          "support": 10.0
+        },
+        "Juniperus_chinensis": {
+          "precision": 1.0,
+          "recall": 0.5714285714285714,
+          "f1-score": 0.7272727272727273,
+          "support": 7.0
+        },
+        "Podocarpus_macrophyllus": {
+          "precision": 0.7777777777777778,
+          "recall": 0.7777777777777778,
+          "f1-score": 0.7777777777777778,
+          "support": 9.0
+        },
+        "Rhododendron": {
+          "precision": 0.75,
+          "recall": 0.6666666666666666,
+          "f1-score": 0.7058823529411765,
+          "support": 9.0
+        },
+        "Xanthostemon_chrysanthus": {
+          "precision": 0.7272727272727273,
+          "recall": 1.0,
+          "f1-score": 0.8421052631578947,
+          "support": 8.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          9,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          10,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          17,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          10,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          4,
+          1,
+          0,
+          2
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          7,
+          2,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          1,
+          0,
+          1,
+          6,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          8
+        ]
+      ]
+    }
+  },
+  "best_model": "SVM_RBF",
+  "test_eval": {
+    "best_model": "SVM_RBF",
+    "n_samples": 93,
+    "accuracy": 0.9247,
+    "macro_f1": 0.9043,
+    "weighted_f1": 0.9221,
+    "per_class": {
+      "Camellia": {
+        "precision": 0.9230769230769231,
+        "recall": 1.0,
+        "f1-score": 0.96,
+        "support": 12.0
+      },
+      "Ficus_microcarpa": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 12.0
+      },
+      "Ficus_microcarpa_golden_leaves": {
+        "precision": 1.0,
+        "recall": 0.9473684210526315,
+        "f1-score": 0.972972972972973,
+        "support": 19.0
+      },
+      "Goeppertia_makoyana": {
+        "precision": 1.0,
+        "recall": 0.9166666666666666,
+        "f1-score": 0.9565217391304348,
+        "support": 12.0
+      },
+      "Juniperus_chinensis": {
+        "precision": 1.0,
+        "recall": 0.5,
+        "f1-score": 0.6666666666666666,
+        "support": 8.0
+      },
+      "Podocarpus_macrophyllus": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 10.0
+      },
+      "Rhododendron": {
+        "precision": 0.8461538461538461,
+        "recall": 1.0,
+        "f1-score": 0.9166666666666666,
+        "support": 11.0
+      },
+      "Xanthostemon_chrysanthus": {
+        "precision": 0.6666666666666666,
+        "recall": 0.8888888888888888,
+        "f1-score": 0.7619047619047619,
+        "support": 9.0
+      }
+    },
+    "confusion_matrix": [
+      [
+        12,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        12,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        18,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      [
+        0,
+        0,
+        0,
+        11,
+        0,
+        0,
+        1,
+        0
+      ],
+      [
+        1,
+        0,
+        0,
+        0,
+        4,
+        0,
+        0,
+        3
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        10,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        11,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        8
+      ]
+    ]
+  }
+}

@@ -1,0 +1,241 @@
+========================================================================
+COMP4423 Assignment 2 — Task 4: Error Analysis
+========================================================================
+
+────────────────────────────────────────────────────────────────────────
+1. OVERALL PERFORMANCE SUMMARY
+────────────────────────────────────────────────────────────────────────
+  Test accuracy  : 0.9247  (92.47%)
+  Macro-F1       : 0.9043
+
+  Per-class F1 scores:
+    Camellia                                  0.960  ███████████████████
+    Ficus_microcarpa                          1.000  ████████████████████
+    Ficus_microcarpa_golden_leaves            0.973  ███████████████████
+    Goeppertia_makoyana                       0.957  ███████████████████
+    Juniperus_chinensis                       0.667  █████████████
+    Podocarpus_macrophyllus                   1.000  ████████████████████
+    Rhododendron                              0.917  ██████████████████
+    Xanthostemon_chrysanthus                  0.762  ███████████████
+
+  Best class  : Ficus_microcarpa  (F1 = 1.000)
+  Worst class : Juniperus_chinensis  (F1 = 0.667)
+  Most-confused pair: true=Juniperus_chinensis → predicted=Xanthostemon_chrysanthus (3 errors)
+
+  Off-diagonal confusion counts (empirical, top 12):
+      3  true=Juniperus_chinensis              → pred=Xanthostemon_chrysanthus
+      1  true=Ficus_microcarpa_golden_leaves   → pred=Xanthostemon_chrysanthus
+      1  true=Goeppertia_makoyana              → pred=Rhododendron
+      1  true=Juniperus_chinensis              → pred=Camellia
+      1  true=Xanthostemon_chrysanthus         → pred=Rhododendron
+
+────────────────────────────────────────────────────────────────────────
+2. FAILURE MODE ANALYSIS
+────────────────────────────────────────────────────────────────────────
+
+The following four failure modes account for the majority of misclassifications.
+For each mode, the connection to the limitations of the specific hand-crafted
+features used (HOG, HSV histogram, LBP) is explained explicitly.
+
+2.1  Background Bias
+----------------------------------------
+OBSERVATION: The classifier occasionally confuses plant classes that
+appear in similar environmental contexts — e.g., both Ficus microcarpa
+and Podocarpus macrophyllus are photographed against the same grey
+campus walls or paved walkways, and Goeppertia makoyana images share
+identical indoor-lobby backgrounds across the training set.  FEATURE
+LINK — HOG: HOG encodes edge directions over the entire image patch, not
+just the plant region.  A prominent wall edge or repeating paving
+texture in the background contributes edge-gradient bins that are
+unrelated to the plant's own morphology. Because there is no background-
+subtraction or saliency mask in the pipeline, the HOG descriptor is
+partially a descriptor of the scene, not purely of the plant.  Classes
+photographed consistently in front of the same background can therefore
+be "recognised" by the background rather than the leaf shape.  FEATURE
+LINK — HSV Colour Histogram: The colour histogram is computed over the
+full image.  A class photographed predominantly in shade (e.g.,
+Rhododendron in courtyard) will have a shifted Value channel that the
+histogram treats as a class-specific colour signature. New test images
+of the same species taken in open sunlight shift the HSV distribution
+and may be misclassified as a different, similarly-coloured class.
+MITIGATION (future work): Crop images to a tight bounding box around the
+plant, or apply a simple GrabCut segmentation to suppress background
+pixels before feature extraction.
+
+2.2  Illumination Shifts
+----------------------------------------
+OBSERVATION: Several misclassifications occur between classes whose leaf
+colours are similar under certain lighting conditions.  Notably, Ficus
+microcarpa (green leaves) and Ficus microcarpa golden leaves (yellow-
+green new growth) can appear almost identical under overcast flat light
+that mutes the yellow saturation.  Conversely, direct sun on a green
+leaf can produce saturated yellow-green highlights that push the HSV Hue
+toward the golden-leaf class.  FEATURE LINK — HSV Colour Histogram: The
+Hue channel in HSV is the primary discriminating feature between the two
+Ficus classes.  However, the absolute Hue value of a leaf pixel is
+affected by the colour temperature of the light source (overcast ≈ 6500
+K, direct sun ≈ 5500 K) and by specular highlights.  A 32-bin histogram
+cannot distinguish "green leaf under warm direct sun" from "golden leaf
+under cool overcast" when their H values fall in the same bin.
+Saturation and Value bins partially compensate but not fully.  FEATURE
+LINK — HOG: HOG provides illumination invariance within a single block
+via L2-Hys normalisation, but this only normalises contrast, not colour.
+When the photometric distortion is primarily a hue shift (not a contrast
+change), HOG offers no additional discriminative power.  MITIGATION
+(future work): Apply histogram equalisation or retinex normalisation to
+standardise illumination before feature extraction.  Including images
+from a wider range of lighting conditions in training would also improve
+robustness.
+
+2.3  Similar-Looking Plants (Inter-Class Confusion)
+----------------------------------------
+OBSERVATION: The most-confused pair in the test set is
+true=Juniperus_chinensis → predicted=Xanthostemon_chrysanthus (3
+errors). Qualitative note: Upward canopy shots can mix bright sky or
+yellow floral mass with fine-scale foliage; coarse HOG cells blur needle
+vs. broadleaf boundaries, and global HSV bins may overlap when
+yellow/green dominates the crop.  The two Ficus classes are the
+structurally closest pair in this dataset: both are glossy-leaved, both
+have the same branching geometry, and they share the same campus
+locations.  The only reliable discriminating cue is the yellow-green
+colouration of new growth in the golden-leaves cultivar.  FEATURE LINK —
+LBP: LBP encodes surface micro-texture.  Both Ficus varieties have
+smooth, glossy leaf surfaces; their LBP histograms are near-identical.
+LBP therefore contributes almost no discriminative information for this
+pair, effectively leaving classification to the colour histogram alone.
+FEATURE LINK — HOG: The leaf shape and venation of the two Ficus
+varieties are structurally indistinguishable at the 128×128 resolution
+used.  HOG cells of size 16×16 px encode broad orientation histograms
+that are the same for both classes. Increasing resolution (e.g.,
+256×256) would allow finer leaf-margin details but would also increase
+feature dimensionality and risk overfitting on a small dataset.
+Rhododendron and Camellia also share a confusion risk when photographed
+in foliage-only state (no flowers): both are broadleaf evergreen shrubs
+of similar size photographed at similar angles.  In non-bloom images,
+both HOG (similar leaf shape), HSV histogram (similar dark-green hue),
+and LBP (similar smooth texture) produce very similar feature vectors.
+MITIGATION (future work): Use scale-invariant keypoint descriptors
+(SIFT/SURF) to capture finer leaf-tip and margin geometry, or collect
+more non-bloom images to improve the foliage-only decision boundary.
+
+2.4  Viewpoint and Scale Changes
+----------------------------------------
+OBSERVATION: Misclassifications are disproportionately concentrated in
+images captured from non-standard viewpoints — looking up into a canopy,
+shooting a close-up of a single leaf from an oblique angle, or capturing
+a heavily occluded branch.  For tall specimens (Ficus microcarpa,
+Xanthostemon chrysanthus), the difference between a ground-level shot of
+the trunk and a mid-canopy shot of leaf clusters produces feature
+vectors that are almost orthogonal.  FEATURE LINK — HOG: HOG is not
+rotation-invariant.  A leaf photographed horizontally produces a
+dominant horizontal edge in the HOG histogram; the same leaf
+photographed vertically produces a dominant vertical edge.  While the
+block normalisation in HOG provides some contrast invariance, it
+provides no invariance to the overall orientation of the subject.  Tall
+columnar Juniperus chinensis, for example, produces very different HOG
+histograms depending on whether the photographer is looking up along the
+column or viewing it from the side.  FEATURE LINK — HSV Colour
+Histogram: The colour histogram is a global, orderless descriptor.  It
+is theoretically viewpoint-invariant (the same leaf seen from the front
+or back has similar colour statistics) but loses all spatial structure.
+At extreme close range, the histogram is dominated by a single leaf
+colour; at far distance, the sky and background colour dominate.  There
+is no spatial pooling that adapts to scale, unlike a pyramid histogram.
+FEATURE LINK — LBP: LBP with radius=3 samples at a fixed physical scale
+(3 px at 128×128 resolution = ~3 mm on a printed image).  At close
+range, LBP captures sub-millimetre surface texture (waxy shine,
+trichomes); at far range, the same pixels encode canopy-level texture
+(branch density, light gaps).  These are categorically different
+signals, yet the same descriptor bin is used for both.  MITIGATION
+(future work): Compute features at multiple scales (image pyramid) and
+pool the results; use dense SIFT with spatial pyramid matching to
+capture both local and global structure in a viewpoint-aware way.
+
+────────────────────────────────────────────────────────────────────────
+3. CLASS-SPECIFIC NOTES
+────────────────────────────────────────────────────────────────────────
+
+  Camellia:
+    High inter-state variation (bloom vs. foliage-only). In-bloom images
+    are classified well (distinctive red/pink HSV hue); foliage-only
+    images are occasionally confused with Rhododendron (similar
+    broadleaf profile).
+
+  Ficus_microcarpa:
+    Generally well-classified due to distinctive aerial roots and dense
+    canopy texture. Main confusion: Ficus_microcarpa_golden_leaves when
+    young golden shoots are not prominently visible in the frame.
+
+  Ficus_microcarpa_golden_leaves:
+    The class with the highest confusion rate due to its visual
+    similarity to standard Ficus when photographed under flat lighting
+    or at distance. HSV hue is the only reliable discriminating cue —
+    any lighting shift that desaturates the yellow tones degrades
+    performance sharply.
+
+  Goeppertia_makoyana:
+    Typically well-classified: the strongly patterned leaf upper surface
+    produces a unique LBP signature and the purple underside shifts the
+    HSV histogram in a class-specific way. Main risk: images showing
+    only green upper surface without the distinctive oval patterning.
+
+  Juniperus_chinensis:
+    Generally well-classified when scale foliage is visible. Confusion
+    with Podocarpus macrophyllus possible at distance where both appear
+    as dark green columnar specimens. HOG is the main discriminating
+    feature (scale foliage vs. strap leaves) but breaks down at low
+    resolution.
+
+  Podocarpus_macrophyllus:
+    Long strap-like leaves produce a distinctive HOG signature at mid-
+    range. Trimmed columnar form can resemble Juniperus from a distance.
+    Fruiting images (purple-green receptacles) may confuse the colour
+    histogram if the training set had few fruiting examples.
+
+  Rhododendron:
+    In-bloom images (purple/pink flower clusters) are almost always
+    correct — the HSV hue of the flowers is unique in the dataset.
+    Foliage-only images are the main source of confusion, misclassified
+    as Camellia (similar broadleaf evergreen morphology, same campus
+    locations).
+
+  Xanthostemon_chrysanthus:
+    In-bloom images are highly distinctive (bright yellow stamens →
+    unique HSV hue). Foliage-only images are harder and may be confused
+    with Ficus_microcarpa (similar glossy oval leaves). Including more
+    foliage-only training images would improve this boundary.
+
+────────────────────────────────────────────────────────────────────────
+4. SUMMARY OF RECOMMENDED IMPROVEMENTS
+────────────────────────────────────────────────────────────────────────
+
+  • Background suppression:
+    Apply GrabCut or simple saliency masking to reduce background
+    contribution to HOG and colour histogram features.
+
+  • Illumination normalisation:
+    Apply retinex or histogram equalisation before feature extraction to
+    reduce sensitivity of HSV colour histograms to lighting colour
+    temperature.
+
+  • Multi-scale feature extraction:
+    Compute HOG and LBP at multiple resolutions (image pyramid) and pool
+    descriptors to achieve partial scale invariance.
+
+  • Spatial pyramid matching:
+    Divide the image into a 1×1 + 2×2 + 4×4 spatial grid and compute
+    colour histograms at each level to add spatial layout without deep
+    learning.
+
+  • Collect more non-bloom images:
+    Rhododendron and Camellia foliage-only images are under-represented;
+    expanding this subset would harden the foliage-only boundary.
+
+  • Higher resolution:
+    Increasing the resize target from 128×128 to 224×224 would allow HOG
+    to capture finer leaf-margin geometry at the cost of higher
+    dimensionality.
+
+========================================================================
+End of error analysis
+========================================================================

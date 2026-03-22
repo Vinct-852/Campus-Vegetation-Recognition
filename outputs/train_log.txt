@@ -1,0 +1,141 @@
+======================================================================
+COMP4423 Assignment 2 — Task 3: Vegetation Classifier Training
+======================================================================
+Data directory : /Users/vincentdeng/Projects/Campus-Vegetation-Recognition/data
+Output directory: /Users/vincentdeng/Projects/Campus-Vegetation-Recognition/outputs
+Image size     : 128×128
+Random seed    : 42
+Parallel jobs  : -1
+
+[1/5] Loading & extracting features ...
+
+  Training set:
+
+  Validation set:
+
+  Feature vector dimensionality (raw): 1886
+  Train samples : 397
+  Val   samples : 80
+  Classes       : ['Camellia', 'Ficus_microcarpa', 'Ficus_microcarpa_golden_leaves', 'Goeppertia_makoyana', 'Juniperus_chinensis', 'Podocarpus_macrophyllus', 'Rhododendron', 'Xanthostemon_chrysanthus']
+  Feature extraction time: 38.1s
+
+[2/5] Standardising features ...
+
+[3/5] Applying PCA (95% variance threshold) ...
+  PCA kept 235 components (from 1886 → 235)
+
+[4/5] Training classifiers ...
+
+  Training SVM_RBF ...
+    Val accuracy : 0.9375
+    Macro F1     : 0.9199
+    Train time   : 0.1s
+
+                                precision    recall  f1-score   support
+
+                      Camellia       1.00      0.90      0.95        10
+              Ficus_microcarpa       1.00      1.00      1.00        10
+Ficus_microcarpa_golden_leaves       1.00      1.00      1.00        17
+           Goeppertia_makoyana       1.00      0.90      0.95        10
+           Juniperus_chinensis       1.00      0.57      0.73         7
+       Podocarpus_macrophyllus       0.90      1.00      0.95         9
+                  Rhododendron       0.90      1.00      0.95         9
+      Xanthostemon_chrysanthus       0.73      1.00      0.84         8
+
+                      accuracy                           0.94        80
+                     macro avg       0.94      0.92      0.92        80
+                  weighted avg       0.95      0.94      0.94        80
+
+
+  Training RandomForest ...
+    Val accuracy : 0.8750
+    Macro F1     : 0.8616
+    Train time   : 0.2s
+
+                                precision    recall  f1-score   support
+
+                      Camellia       0.83      1.00      0.91        10
+              Ficus_microcarpa       1.00      0.90      0.95        10
+Ficus_microcarpa_golden_leaves       0.81      1.00      0.89        17
+           Goeppertia_makoyana       1.00      0.90      0.95        10
+           Juniperus_chinensis       1.00      0.57      0.73         7
+       Podocarpus_macrophyllus       0.89      0.89      0.89         9
+                  Rhododendron       1.00      0.67      0.80         9
+      Xanthostemon_chrysanthus       0.70      0.88      0.78         8
+
+                      accuracy                           0.88        80
+                     macro avg       0.90      0.85      0.86        80
+                  weighted avg       0.90      0.88      0.87        80
+
+
+  Training GradientBoosting ...
+    Val accuracy : 0.8875
+    Macro F1     : 0.8655
+    Train time   : 18.2s
+
+                                precision    recall  f1-score   support
+
+                      Camellia       1.00      0.90      0.95        10
+              Ficus_microcarpa       1.00      1.00      1.00        10
+Ficus_microcarpa_golden_leaves       0.94      1.00      0.97        17
+           Goeppertia_makoyana       0.91      1.00      0.95        10
+           Juniperus_chinensis       1.00      0.57      0.73         7
+       Podocarpus_macrophyllus       0.78      0.78      0.78         9
+                  Rhododendron       0.75      0.67      0.71         9
+      Xanthostemon_chrysanthus       0.73      1.00      0.84         8
+
+                      accuracy                           0.89        80
+                     macro avg       0.89      0.86      0.87        80
+                  weighted avg       0.90      0.89      0.88        80
+
+
+[5/5] Best model: SVM_RBF  (val accuracy = 0.9375)
+
+  Held-out test evaluation (best model only) ...
+    Test accuracy : 0.9247
+    Test macro F1 : 0.9043
+
+                                precision    recall  f1-score   support
+
+                      Camellia       0.92      1.00      0.96        12
+              Ficus_microcarpa       1.00      1.00      1.00        12
+Ficus_microcarpa_golden_leaves       1.00      0.95      0.97        19
+           Goeppertia_makoyana       1.00      0.92      0.96        12
+           Juniperus_chinensis       1.00      0.50      0.67         8
+       Podocarpus_macrophyllus       1.00      1.00      1.00        10
+                  Rhododendron       0.85      1.00      0.92        11
+      Xanthostemon_chrysanthus       0.67      0.89      0.76         9
+
+                      accuracy                           0.92        93
+                     macro avg       0.93      0.91      0.90        93
+                  weighted avg       0.94      0.92      0.92        93
+
+
+  Saving model artefacts ...
+
+======================================================================
+FEATURE EXTRACTION SUMMARY
+======================================================================
+HOG  : 9 orientations, 16×16 cells, 2×2 block normalisation (L2-Hys)
+HSV  : 32-bin histogram per channel (H/S/V), L1-normalised → 96-D
+LBP  : uniform, radius=3, 24 points → 26-D histogram
+Concat raw dim : 1886
+After PCA (95%) : 235 components
+
+RANDOM FOREST GRID SEARCH
+  Best params   : {'max_depth': None, 'min_samples_leaf': 1, 'n_estimators': 300}
+  Best CV score : 0.8187
+
+REPRODUCIBILITY
+  python: 3.13.9
+  platform: macOS-15.6.1-arm64-arm-64bit-Mach-O
+  numpy: 2.4.2
+  sklearn: 1.8.0
+  skimage: 0.26.0
+  joblib: 1.5.3
+  PYTHONHASHSEED: 42
+  git_commit_short: 645e28f
+
+HELD-OUT TEST (best model)
+  accuracy: 0.9247
+  macro_f1: 0.9043

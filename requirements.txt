@@ -1,0 +1,12 @@
+pandas
+scikit-learn
+opencv-python
+imagehash
+scikit-image
+streamlit
+numpy>=1.24.0
+Pillow>=10.0.0
+joblib>=1.3.0
+tqdm>=4.65.0
+matplotlib>=3.7.0
+flask>=3.0.0

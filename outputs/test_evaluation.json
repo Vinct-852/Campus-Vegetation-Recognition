@@ -1,0 +1,177 @@
+{
+  "test_dir": "/Users/vincentdeng/Projects/Campus-Vegetation-Recognition/data/test",
+  "n_samples": 93,
+  "accuracy": 0.9247,
+  "macro_f1": 0.9043,
+  "weighted_f1": 0.9221,
+  "confusion_matrix": [
+    [
+      12,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      12,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      18,
+      0,
+      0,
+      0,
+      0,
+      1
+    ],
+    [
+      0,
+      0,
+      0,
+      11,
+      0,
+      0,
+      1,
+      0
+    ],
+    [
+      1,
+      0,
+      0,
+      0,
+      4,
+      0,
+      0,
+      3
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      10,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      11,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      8
+    ]
+  ],
+  "class_names": [
+    "Camellia",
+    "Ficus_microcarpa",
+    "Ficus_microcarpa_golden_leaves",
+    "Goeppertia_makoyana",
+    "Juniperus_chinensis",
+    "Podocarpus_macrophyllus",
+    "Rhododendron",
+    "Xanthostemon_chrysanthus"
+  ],
+  "top_confusion_pairs": [
+    {
+      "count": 3,
+      "true": "Juniperus_chinensis",
+      "pred": "Xanthostemon_chrysanthus"
+    },
+    {
+      "count": 1,
+      "true": "Ficus_microcarpa_golden_leaves",
+      "pred": "Xanthostemon_chrysanthus"
+    },
+    {
+      "count": 1,
+      "true": "Goeppertia_makoyana",
+      "pred": "Rhododendron"
+    },
+    {
+      "count": 1,
+      "true": "Juniperus_chinensis",
+      "pred": "Camellia"
+    },
+    {
+      "count": 1,
+      "true": "Xanthostemon_chrysanthus",
+      "pred": "Rhododendron"
+    }
+  ],
+  "per_class": {
+    "Camellia": {
+      "precision": 0.9230769230769231,
+      "recall": 1.0,
+      "f1-score": 0.96,
+      "support": 12.0
+    },
+    "Ficus_microcarpa": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 12.0
+    },
+    "Ficus_microcarpa_golden_leaves": {
+      "precision": 1.0,
+      "recall": 0.9473684210526315,
+      "f1-score": 0.972972972972973,
+      "support": 19.0
+    },
+    "Goeppertia_makoyana": {
+      "precision": 1.0,
+      "recall": 0.9166666666666666,
+      "f1-score": 0.9565217391304348,
+      "support": 12.0
+    },
+    "Juniperus_chinensis": {
+      "precision": 1.0,
+      "recall": 0.5,
+      "f1-score": 0.6666666666666666,
+      "support": 8.0
+    },
+    "Podocarpus_macrophyllus": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 10.0
+    },
+    "Rhododendron": {
+      "precision": 0.8461538461538461,
+      "recall": 1.0,
+      "f1-score": 0.9166666666666666,
+      "support": 11.0
+    },
+    "Xanthostemon_chrysanthus": {
+      "precision": 0.6666666666666666,
+      "recall": 0.8888888888888888,
+      "f1-score": 0.7619047619047619,
+      "support": 9.0
+    }
+  },
+  "model_path": "/Users/vincentdeng/Projects/Campus-Vegetation-Recognition/outputs/best_model.pkl"
+}

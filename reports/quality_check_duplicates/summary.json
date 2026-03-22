@@ -1,0 +1,26 @@
+{
+  "scan": {
+    "data_root": "/Users/vincentdeng/Projects/Campus-Vegetation-Recognition/data",
+    "splits": [
+      "train",
+      "val",
+      "test"
+    ],
+    "recursive": false,
+    "num_files_scanned": 570,
+    "num_files_readable": 570,
+    "num_files_corrupted": 0
+  },
+  "exact_duplicates_md5": {
+    "num_exact_duplicate_rows": 2
+  },
+  "near_duplicates_phash": {
+    "phash_threshold_bits": 8,
+    "phash_hash_size": 8,
+    "num_near_duplicate_pairs": 170
+  },
+  "notes": {
+    "exact_duplicates": "Grouped by identical MD5 bytes (includes corrupted files because MD5 computed for all).",
+    "near_duplicates": "pHash computed only for readable images after PIL verify."
+  }
+}

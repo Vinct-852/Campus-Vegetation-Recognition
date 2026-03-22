@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Campus plant classifier</title>
+  <style>
+    :root {
+      --bg: #f4f7f4;
+      --card: #fff;
+      --text: #1a2e1a;
+      --muted: #5c6b5c;
+      --accent: #2d6a4f;
+      --accent2: #40916c;
+      --err: #9d0208;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+    .wrap { max-width: 40rem; margin: 0 auto; padding: 2rem 1.25rem; }
+    h1 { font-size: 1.35rem; font-weight: 600; margin: 0 0 0.5rem; }
+    .sub { color: var(--muted); font-size: 0.95rem; margin-bottom: 1.5rem; }
+    .card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,.08);
+      margin-bottom: 1.25rem;
+    }
+    .card h2 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin: 0 0 0.75rem; }
+    ul.instructions { margin: 0; padding-left: 1.2rem; }
+    ul.instructions li { margin-bottom: 0.35rem; }
+    form.upload label { display: block; font-weight: 500; margin-bottom: 0.5rem; }
+    input[type="file"] { width: 100%; margin-bottom: 1rem; }
+    button {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    button:hover { background: var(--accent2); }
+    .err { color: var(--err); font-size: 0.95rem; margin-top: 0.75rem; }
+    .result { margin-top: 0.5rem; }
+    .result strong { font-size: 1.25rem; color: var(--accent); }
+    .conf { color: var(--muted); font-size: 0.9rem; }
+    table.probs { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin-top: 0.75rem; }
+    table.probs td { padding: 0.35rem 0; border-bottom: 1px solid #e8ede8; }
+    table.probs td:last-child { text-align: right; font-variant-numeric: tabular-nums; }
+    .bar { height: 6px; background: #e8ede8; border-radius: 3px; overflow: hidden; margin-top: 2px; }
+    .bar > i { display: block; height: 100%; background: var(--accent2); border-radius: 3px; }
+    footer { font-size: 0.8rem; color: var(--muted); margin-top: 2rem; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Campus vegetation classifier</h1>
+    <p class="sub">Traditional ML (HOG + HSV + LBP → PCA → SVM/RF/GBDT). Runs only on your machine.</p>
+
+    <div class="card">
+      <h2>How to use</h2>
+      <ul class="instructions">
+        <li>Choose a <strong>plant photo</strong> (JPEG, PNG, WebP, or GIF).</li>
+        <li>Click <strong>Predict</strong>. The image is resized to 128×128 (same as training).</li>
+        <li>Results show the predicted class and estimated confidence.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Upload</h2>
+      <form class="upload" action="{{ url_for('predict') }}" method="post" enctype="multipart/form-data">
+        <label for="image">Image file</label>
+        <input id="image" name="image" type="file" accept="image/*" required />
+        <button type="submit">Predict</button>
+      </form>
+      {% if error %}
+        <p class="err">{{ error }}</p>
+      {% endif %}
+    </div>
+
+    {% if prediction %}
+    <div class="card">
+      <h2>Prediction</h2>
+      <p class="result">
+        <strong>{{ prediction.label }}</strong><br />
+        <span class="conf">Confidence: {{ (prediction.confidence * 100) | round(1) }}%</span>
+        {% if filename %}<br /><span class="conf">File: {{ filename }}</span>{% endif %}
+      </p>
+      {% if probs %}
+      <table class="probs">
+        {% for name, p in probs %}
+        <tr>
+          <td>
+            {{ name }}
+            <div class="bar"><i style="width: {{ (p * 100) | round(1) }}%"></i></div>
+          </td>
+          <td>{{ (p * 100) | round(1) }}%</td>
+        </tr>
+        {% endfor %}
+      </table>
+      {% endif %}
+    </div>
+    {% endif %}
+
+    <footer>
+      Train models with <code>python classifier.py</code> before first use. Classes: {% if classes %}{{ classes | join(', ') }}{% else %}8 campus species (see README){% endif %}.
+    </footer>
+  </div>
+</body>
+</html>
